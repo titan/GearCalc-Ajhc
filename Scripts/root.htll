@@ -1,0 +1,32 @@
+(let ((title (label '((text . "Gear Calculator")
+                      (text-alignment . center))))
+      (gears (segmented-control '((items . ("First" "Second" "Third" "Fourth" "Fifth"))
+                                  (selected-segment-index . 0)
+                                  (title-text-attributes-for-state . (((text-color . blue-color)
+                                                                       (text-shadow-color . red-color)) . normal))
+                                  (target . (self segmentedValueChanged: value-changed)))))
+      (speedlabel (label '((text-alignment . center))))
+      (speedmeter (slider `((continuous . ,true)
+                            (minimum-value . 0)
+                            (maximum-value . 240)
+                            (target . (self sliderValueChanged: value-changed)))))
+      (tacholabel (label '((text-alignment . center))))
+      (tachometer (slider `((continuous . ,true)
+                            (minimum-value . 0)
+                            (maximum-value . 6500)
+                            (target . (self sliderValueChanged: value-changed))))))
+  (in
+   (above
+    title
+    (center
+     (^^
+      gears
+      (vseq
+       (above speedlabel speedmeter 0.5)
+       blank
+       (above tacholabel tachometer 0.5)
+       blank)
+      20)
+     0.01 0.01)
+    0.15)
+   'self.view))

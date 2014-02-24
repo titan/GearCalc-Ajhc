@@ -1,0 +1,17 @@
+#!/usr/bin/expect -f
+set ip [lindex $argv 0 ]
+set password [lindex $argv 1 ]
+set dstdir [lindex $argv 2 ]
+set timeout 30
+spawn ssh root@$ip "rm -rf /Applications/$dstdir"
+expect {
+  "*yes/no" { send "yes\r"; exp_continue}
+  "*password:" { send "$password\r" }
+}
+expect eof
+spawn ssh root@$ip "su mobile -c uicache"
+expect {
+  "*yes/no" { send "yes\r"; exp_continue}
+  "*password:" { send "$password\r" }
+}
+expect eof

@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+set ip [lindex $argv 0 ]
+set password [lindex $argv 1 ]
+set src [lindex $argv 2 ]
+set dstdir [lindex $argv 3 ]
+set timeout 30
+spawn scp $src root@$ip:/tmp/
+expect {
+  "*yes/no" { send "yes\r"; exp_continue}
+  "*password:" { send "$password\r" }
+}
+expect eof
+spawn ssh root@$ip "mv /Applications/$dstdir /tmp/$dstdir; su mobile -c uicache; mv /tmp/`basename $src` /tmp/$dstdir; mv /tmp/$dstdir /Applications/; su mobile -c uicache"
+expect {
+  "*yes/no" { send "yes\r"; exp_continue}
+  "*password:" { send "$password\r" }
+}
+expect eof
